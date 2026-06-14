@@ -10,7 +10,7 @@ import {
   FaBriefcase as Briefcase,
   FaFolderOpen as FolderOpen,
   FaEnvelope as Mail,
-  FaCircleUser as CircleUserRound
+  FaRegHand as Hand
 } from 'react-icons/fa6';
 import { 
   PiSunLight as Sun, 
@@ -67,11 +67,13 @@ const Navbar: React.FC = () => {
                 className="flex items-center space-x-2 sm:space-x-3 text-xl sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600 bg-clip-text text-transparent hover:scale-105 transition-all duration-300 group"
               >
                 <div className="relative">
-                  <CircleUserRound className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-500 group-hover:text-blue-500 transition-colors duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                    <Hand className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-wave" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300 -z-10"></div>
                 </div>
-                <span className="hidden sm:block">Portfolio</span>
-                <span className="block sm:hidden text-base">pf.</span>
+                <span className="hidden sm:block">Shashank</span>
+                <span className="block sm:hidden text-base">Shashank</span>
               </Link>
             </div>
 
