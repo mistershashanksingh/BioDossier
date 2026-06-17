@@ -6,8 +6,15 @@ import {
   FaGithub as Github,
   FaCalendarDays as Calendar,
   FaStar as Star,
-  FaCodeFork as GitFork
+  FaCodeFork as GitFork,
+  FaGears,
+  FaBrain,
+  FaAtom,
+  FaServer,
+  FaMagnifyingGlassChart,
+  FaShieldHalved
 } from 'react-icons/fa6';
+import type { IconType } from 'react-icons';
 import ScrollAnimatedSection from '@/components/ScrollAnimatedSection';
 
 const Projects: React.FC = () => {
@@ -17,7 +24,7 @@ const Projects: React.FC = () => {
       title: 'DevOps Automation Suite',
       description: 'Comprehensive CI/CD pipeline automation tool with monitoring and alerting capabilities. Built to streamline deployment processes and reduce manual intervention.',
       longDescription: 'A complete DevOps automation platform that integrates with popular CI/CD tools, provides real-time monitoring, and includes automated rollback capabilities. The suite supports multiple deployment strategies including blue-green and canary deployments.',
-      image: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800',
+      icon: FaGears,
       technologies: ['Docker', 'Kubernetes', 'Jenkins', 'Prometheus', 'Grafana', 'Python', 'Go'],
       category: 'DevOps',
       status: 'Active',
@@ -42,7 +49,7 @@ const Projects: React.FC = () => {
       title: 'MLOps Model Registry',
       description: 'Cloud-native ML model registry with versioning, deployment, and monitoring capabilities for machine learning operations.',
       longDescription: 'A sophisticated MLOps platform that handles the complete ML model lifecycle from experimentation to production deployment. Features include A/B testing, model performance monitoring, and automated retraining pipelines.',
-      image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800',
+      icon: FaBrain,
       technologies: ['MLflow', 'FastAPI', 'Docker', 'PostgreSQL', 'React', 'AWS', 'TensorFlow'],
       category: 'MLOps',
       status: 'Active',
@@ -67,7 +74,7 @@ const Projects: React.FC = () => {
       title: 'Quantum ML Algorithms',
       description: 'Implementation of quantum machine learning algorithms using Qiskit, exploring quantum advantage in specific ML tasks.',
       longDescription: 'Research-focused project implementing various quantum machine learning algorithms including QAOA, VQE, and quantum neural networks. Includes performance comparisons with classical counterparts and visualization tools.',
-      image: 'https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800',
+      icon: FaAtom,
       technologies: ['Qiskit', 'Python', 'NumPy', 'Matplotlib', 'Jupyter', 'Scipy'],
       category: 'Quantum',
       status: 'Research',
@@ -92,7 +99,7 @@ const Projects: React.FC = () => {
       title: 'Infrastructure as Code Templates',
       description: 'Collection of Terraform and Ansible templates for common cloud infrastructure patterns and best practices.',
       longDescription: 'Comprehensive collection of Infrastructure as Code templates covering AWS, GCP, and Azure. Includes security best practices, cost optimization strategies, and multi-environment configurations.',
-      image: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=800',
+      icon: FaServer,
       technologies: ['Terraform', 'Ansible', 'AWS', 'GCP', 'Azure', 'Bash', 'YAML'],
       category: 'Infrastructure',
       status: 'Active',
@@ -117,7 +124,7 @@ const Projects: React.FC = () => {
       title: 'AI-Powered Log Analysis',
       description: 'Machine learning system for automated log analysis, anomaly detection, and intelligent alerting in distributed systems.',
       longDescription: 'Advanced log analysis platform using natural language processing and anomaly detection algorithms to automatically identify issues in distributed systems. Features predictive alerting and root cause analysis.',
-      image: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=800',
+      icon: FaMagnifyingGlassChart,
       technologies: ['Python', 'Elasticsearch', 'Logstash', 'Kibana', 'Scikit-learn', 'Docker'],
       category: 'AI/ML',
       status: 'Active',
@@ -142,7 +149,7 @@ const Projects: React.FC = () => {
       title: 'Container Security Scanner',
       description: 'Automated security scanning tool for container images with vulnerability assessment and compliance checking.',
       longDescription: 'Security-focused tool that performs comprehensive vulnerability scanning of container images, checks for compliance with security best practices, and integrates with CI/CD pipelines for automated security testing.',
-      image: 'https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=800',
+      icon: FaShieldHalved,
       technologies: ['Go', 'Docker', 'Kubernetes', 'PostgreSQL', 'React', 'REST API'],
       category: 'Security',
       status: 'Active',
@@ -179,6 +186,25 @@ const Projects: React.FC = () => {
         return 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300';
       default:
         return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300';
+    }
+  };
+
+  const getCategoryGradient = (category: string) => {
+    switch (category) {
+      case 'DevOps':
+        return 'from-blue-500 via-sky-500 to-indigo-600';
+      case 'MLOps':
+        return 'from-teal-500 via-emerald-500 to-cyan-600';
+      case 'AI/ML':
+        return 'from-green-500 via-emerald-500 to-teal-600';
+      case 'Quantum':
+        return 'from-cyan-500 via-sky-500 to-blue-600';
+      case 'Infrastructure':
+        return 'from-orange-500 via-amber-500 to-rose-500';
+      case 'Security':
+        return 'from-rose-500 via-red-500 to-orange-600';
+      default:
+        return 'from-cyan-500 via-sky-500 to-blue-600';
     }
   };
 
@@ -238,7 +264,9 @@ const Projects: React.FC = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {filteredProjects.map((project, index) => (
+          {filteredProjects.map((project, index) => {
+            const Icon: IconType = project.icon;
+            return (
             <ScrollAnimatedSection
               key={project.id}
               animation="slide-up"
@@ -246,17 +274,20 @@ const Projects: React.FC = () => {
               threshold={0.1}
             >
               <div className="group group p-8 glass-card rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 hover:shadow-2xl transition-all duration-500">
-              {/* Project Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Project Stats */}
+              {/* Project Icon Header */}
+              <div className={`relative h-48 overflow-hidden rounded-xl flex items-center justify-center bg-gradient-to-br ${getCategoryGradient(project.category)}`}>
+                {/* Decorative glow + faint pattern */}
+                <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_30%_25%,white,transparent_55%)]"></div>
+                <div className="absolute -bottom-8 -right-6 opacity-10">
+                  <Icon className="w-44 h-44 text-white" />
+                </div>
+
+                {/* Main vector icon */}
+                <Icon className="relative z-10 w-24 h-24 text-white/95 drop-shadow-lg group-hover:scale-110 transition-transform duration-500" />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Project Status */}
                 <div className="absolute top-4 right-4 flex space-x-2">
                   <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(project.status)}`}>
                     {project.status}
@@ -359,7 +390,8 @@ const Projects: React.FC = () => {
               </div>
             </div>
             </ScrollAnimatedSection>
-          ))}
+            );
+          })}
         </div>
 
         {/* Call to Action */}

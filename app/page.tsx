@@ -158,13 +158,13 @@ const Home: React.FC = () => {
 
           {/* Tech Icons Section */}
           <ScrollAnimatedSection animation="scale-in" delay={600} duration={800} triggerOnce={false}>
-            <div className="flex flex-wrap justify-center gap-6 mb-8">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-4 sm:gap-6 mb-8 max-w-xs sm:max-w-none mx-auto">
               {techIcons.map((tech, index) => {
                 const Icon = tech.icon;
                 return (
                   <div
                     key={index}
-                    className="group flex flex-col items-center space-y-2 p-4 glass-card rounded-2xl hover:scale-110 transition-all duration-500"
+                    className="group flex flex-col items-center justify-center space-y-2 p-4 glass-card rounded-2xl hover:scale-110 transition-all duration-500"
                     style={{ animationDelay: tech.delay }}
                   >
                     <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

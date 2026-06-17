@@ -1,60 +1,181 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
-// Friendly avatar that waves "hello" — skin-tone face + waving hand.
-// The waving hand uses the global `.animate-wave` keyframes (globals.css).
-const HelloAvatar: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    viewBox="0 0 64 64"
-    className={className}
-    role="img"
-    aria-label="Waving hello avatar"
-  >
-    {/* soft skin shadow */}
-    <ellipse cx="27" cy="47" rx="14" ry="3" fill="#000" opacity="0.06" />
+const CanvasHalfBodyAvatar = ({ size = 200, className }) => {
+  const canvasRef = useRef(null);
 
-    {/* hair (back) */}
-    <path d="M11 30 A16 16 0 0 1 43 30 C39 19 33 15 27 15 C21 15 15 19 11 30 Z" fill="#43342A" />
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    {/* face */}
-    <circle cx="27" cy="30" r="15" fill="#F2C088" />
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
 
-    {/* ears */}
-    <circle cx="12" cy="31" r="2.6" fill="#EDB877" />
-    <circle cx="42" cy="31" r="2.6" fill="#EDB877" />
+    // High-DPI screen support for crisp edges
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
 
-    {/* hair (fringe over forehead) */}
-    <path d="M12 28 C14 19 21 15 27 15 C33 15 40 19 42 28 C38 23 33 22 27 22 C21 22 16 23 12 28 Z" fill="#3A2C22" />
+    // Normalize to a 100x100 grid so all coordinates are resolution-independent
+    ctx.scale(dpr * (size / 100), dpr * (size / 100));
 
-    {/* eyes */}
-    <circle cx="21" cy="30" r="2" fill="#33271F" />
-    <circle cx="33" cy="30" r="2" fill="#33271F" />
-    {/* eye shine */}
-    <circle cx="21.7" cy="29.3" r="0.6" fill="#fff" />
-    <circle cx="33.7" cy="29.3" r="0.6" fill="#fff" />
+    // Custom helper for rounded rectangles
+    const roundRect = (context, x, y, width, height, radius) => {
+      context.beginPath();
+      context.moveTo(x + radius, y);
+      context.lineTo(x + width - radius, y);
+      context.quadraticCurveTo(x + width, y, x + width, y + radius);
+      context.lineTo(x + width, y + height - radius);
+      context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      context.lineTo(x + radius, y + height);
+      context.quadraticCurveTo(x, y + height, x, y + height - radius);
+      context.lineTo(x, y + radius);
+      context.quadraticCurveTo(x, y, x + radius, y);
+      context.closePath();
+    };
 
-    {/* cheeks */}
-    <circle cx="18" cy="35" r="2.3" fill="#EE9C7E" opacity="0.55" />
-    <circle cx="36" cy="35" r="2.3" fill="#EE9C7E" opacity="0.55" />
+    const skinColor = "#F2C088";
+    const hairColor = "#FDE047";
+    const accessoryColor = "#D8B4E2"; // Mask & Headband
+    const shirtColor = "#1E3A8A";     // Deep navy — pops against the cyan/blue badge
 
-    {/* smile */}
-    <path d="M21 37 Q27 42 33 37" stroke="#33271F" strokeWidth="2" fill="none" strokeLinecap="round" />
+    const render = (time) => {
+      ctx.clearRect(0, 0, 100, 100);
 
-    {/* waving hand (raised, top-right) */}
-    <g
-      className="animate-wave"
-      style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}
-    >
-      {/* palm */}
-      <rect x="44" y="23" width="12" height="13" rx="5.5" fill="#F2C088" stroke="#E0A86B" strokeWidth="1" />
-      {/* fingers */}
-      <rect x="45.2" y="14" width="2.6" height="11" rx="1.3" fill="#F2C088" stroke="#E0A86B" strokeWidth="0.6" />
-      <rect x="48.6" y="12" width="2.6" height="13" rx="1.3" fill="#F2C088" stroke="#E0A86B" strokeWidth="0.6" />
-      <rect x="52" y="13" width="2.6" height="12" rx="1.3" fill="#F2C088" stroke="#E0A86B" strokeWidth="0.6" />
-      <rect x="55.4" y="16" width="2.6" height="9" rx="1.3" fill="#F2C088" stroke="#E0A86B" strokeWidth="0.6" />
-      {/* thumb */}
-      <rect x="40" y="25" width="6.5" height="2.8" rx="1.4" fill="#F2C088" stroke="#E0A86B" strokeWidth="0.6" transform="rotate(-35 44 26)" />
-    </g>
-  </svg>
-);
+      // --- Circular badge frame: clip everything to a centered circle ---
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(50, 50, 49, 0, Math.PI * 2);
+      ctx.clip();
 
-export default HelloAvatar;
+      // Brand gradient background (matches the navbar logo gradient)
+      const bg = ctx.createLinearGradient(0, 0, 100, 100);
+      bg.addColorStop(0, "#22D3EE");   // cyan-400
+      bg.addColorStop(0.5, "#0EA5E9"); // sky-500
+      bg.addColorStop(1, "#2563EB");   // blue-600
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, 100, 100);
+
+      // Soft top highlight for a glossy, polished look
+      const gloss = ctx.createRadialGradient(38, 30, 4, 50, 40, 70);
+      gloss.addColorStop(0, "rgba(255,255,255,0.30)");
+      gloss.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = gloss;
+      ctx.fillRect(0, 0, 100, 100);
+
+      // --- 1. Shoulders / Tank Top (fills the bottom of the badge) ---
+      ctx.fillStyle = shirtColor;
+      ctx.beginPath();
+      ctx.moveTo(16, 100);
+      ctx.lineTo(24, 80);
+      ctx.quadraticCurveTo(50, 70, 76, 80); // shoulder line arcing over the neck
+      ctx.lineTo(84, 100);
+      ctx.closePath();
+      ctx.fill();
+
+      // Neck
+      ctx.fillStyle = skinColor;
+      ctx.fillRect(43, 60, 14, 12);
+
+      // --- 2. Right Arm (Waving Animation) — peeks up from the shoulder ---
+      const waveAngle = Math.sin(time / 150) * 0.35 - 0.15;
+      ctx.save();
+      ctx.translate(74, 80); // pivot at right shoulder
+      ctx.rotate(waveAngle);
+
+      ctx.fillStyle = skinColor;
+      // Upper arm raised toward the top-right
+      roundRect(ctx, -3, -26, 9, 30, 4.5);
+      ctx.fill();
+      // Hand
+      ctx.beginPath();
+      ctx.arc(1, -28, 6, 0, Math.PI * 2);
+      ctx.fill();
+      // Fingers
+      roundRect(ctx, -4, -36, 3, 9, 1.5);
+      roundRect(ctx, 0, -38, 3, 10, 1.5);
+      roundRect(ctx, 4, -36, 3, 9, 1.5);
+      // Armband
+      ctx.fillStyle = accessoryColor;
+      roundRect(ctx, -4, -8, 11, 4, 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Ears
+      ctx.fillStyle = skinColor;
+      ctx.beginPath();
+      ctx.arc(35, 42, 4, 0, Math.PI * 2);
+      ctx.arc(65, 42, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // --- 3. Head & Face (centered, fills the frame) ---
+      ctx.fillStyle = skinColor;
+      roundRect(ctx, 35, 26, 30, 30, 11);
+      ctx.fill();
+
+      // Hair (blonde) — rounded cap over the top of the head
+      ctx.fillStyle = hairColor;
+      ctx.beginPath();
+      ctx.arc(50, 30, 18, Math.PI, 0);
+      ctx.fill();
+      ctx.fillRect(32, 28, 6, 10); // left sideburn
+      ctx.fillRect(62, 28, 6, 10); // right sideburn
+
+      // Headband
+      ctx.fillStyle = accessoryColor;
+      roundRect(ctx, 33, 24, 34, 6, 3);
+      ctx.fill();
+
+      // Eyes
+      ctx.fillStyle = "#33271F";
+      ctx.beginPath();
+      ctx.arc(44, 42, 2, 0, Math.PI * 2);
+      ctx.arc(56, 42, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mask (purple) over the lower face
+      ctx.fillStyle = accessoryColor;
+      ctx.beginPath();
+      ctx.moveTo(35, 46);
+      ctx.quadraticCurveTo(50, 42, 65, 46); // top curve
+      ctx.lineTo(61, 55);
+      ctx.quadraticCurveTo(50, 60, 39, 55); // bottom curve
+      ctx.closePath();
+      ctx.fill();
+      // Mask straps to the ears
+      ctx.strokeStyle = accessoryColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(35, 46);
+      ctx.lineTo(32, 43);
+      ctx.moveTo(65, 46);
+      ctx.lineTo(68, 43);
+      ctx.stroke();
+
+      ctx.restore(); // remove circular clip
+
+      // Crisp ring around the badge
+      ctx.beginPath();
+      ctx.arc(50, 50, 48, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255,255,255,0.55)";
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    animationFrameId = requestAnimationFrame(render);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [size]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className={className}
+      style={{ display: 'block', borderRadius: '9999px' }}
+      aria-label="Waving avatar"
+      role="img"
+    />
+  );
+};
+
+export default CanvasHalfBodyAvatar;

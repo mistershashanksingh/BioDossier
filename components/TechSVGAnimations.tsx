@@ -107,7 +107,7 @@ const TechSVGAnimations: React.FC = () => {
       </div>
 
       {/* Cloud Infrastructure */}
-      <div className="absolute top-40 left-1/2 animate-float opacity-20" style={{ animationDelay: '3s' }}>
+      <div className="hidden md:block absolute top-40 left-1/2 animate-float opacity-20" style={{ animationDelay: '3s' }}>
         <svg width="90" height="60" viewBox="0 0 24 16" className={isDark ? 'text-cyan-400' : 'text-cyan-600'}>
           <g fill="currentColor">
             <path d="M18 8c0-3.31-2.69-6-6-6-2.5 0-4.65 1.54-5.55 3.72C4.96 5.28 4 6.53 4 8c0 2.21 1.79 4 4 4h10c1.66 0 3-1.34 3-3s-1.34-3-3-3z">
@@ -127,7 +127,7 @@ const TechSVGAnimations: React.FC = () => {
       </div>
 
       {/* Quantum Circuit */}
-      <div className="absolute bottom-20 right-32 animate-float opacity-20" style={{ animationDelay: '4s' }}>
+      <div className="hidden md:block absolute bottom-20 right-32 animate-float opacity-20" style={{ animationDelay: '4s' }}>
         <svg width="100" height="60" viewBox="0 0 24 16" className={isDark ? 'text-cyan-400' : 'text-cyan-600'}>
           <g fill="none" stroke="currentColor" strokeWidth="1.5">
             {/* Quantum gates */}
@@ -161,7 +161,7 @@ const TechSVGAnimations: React.FC = () => {
       </div>
 
       {/* Git Branch Animation */}
-      <div className="absolute top-60 right-10 animate-float opacity-20" style={{ animationDelay: '5s' }}>
+      <div className="hidden md:block absolute top-60 right-10 animate-float opacity-20" style={{ animationDelay: '5s' }}>
         <svg width="80" height="80" viewBox="0 0 24 24" className={isDark ? 'text-cyan-400' : 'text-cyan-600'}>
           <g fill="currentColor" stroke="currentColor" strokeWidth="1">
             <circle cx="6" cy="6" r="2">
@@ -191,7 +191,7 @@ const TechSVGAnimations: React.FC = () => {
       </div>
 
       {/* Database Animation */}
-      <div className="absolute bottom-40 left-1/3 animate-float opacity-20" style={{ animationDelay: '6s' }}>
+      <div className="hidden md:block absolute bottom-40 left-1/3 animate-float opacity-20" style={{ animationDelay: '6s' }}>
         <svg width="60" height="80" viewBox="0 0 24 32" className={isDark ? 'text-blue-400' : 'text-blue-600'}>
           <g fill="currentColor">
             <ellipse cx="12" cy="6" rx="8" ry="3">
