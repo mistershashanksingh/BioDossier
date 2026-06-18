@@ -1,14 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 
-const CanvasHalfBodyAvatar = ({ size = 200, className }) => {
-  const canvasRef = useRef(null);
+interface CanvasHalfBodyAvatarProps {
+  size?: number;
+  className?: string;
+}
+
+const CanvasHalfBodyAvatar: React.FC<CanvasHalfBodyAvatarProps> = ({ size = 200, className }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    let animationFrameId;
+    if (!ctx) return;
+    let animationFrameId: number;
 
     // High-DPI screen support for crisp edges
     const dpr = window.devicePixelRatio || 1;
@@ -19,7 +25,14 @@ const CanvasHalfBodyAvatar = ({ size = 200, className }) => {
     ctx.scale(dpr * (size / 100), dpr * (size / 100));
 
     // Custom helper for rounded rectangles
-    const roundRect = (context, x, y, width, height, radius) => {
+    const roundRect = (
+      context: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      radius: number
+    ) => {
       context.beginPath();
       context.moveTo(x + radius, y);
       context.lineTo(x + width - radius, y);
@@ -38,7 +51,7 @@ const CanvasHalfBodyAvatar = ({ size = 200, className }) => {
     const accessoryColor = "#D8B4E2"; // Mask & Headband
     const shirtColor = "#1E3A8A";     // Deep navy — pops against the cyan/blue badge
 
-    const render = (time) => {
+    const render = (time: number) => {
       ctx.clearRect(0, 0, 100, 100);
 
       // --- Circular badge frame: clip everything to a centered circle ---
