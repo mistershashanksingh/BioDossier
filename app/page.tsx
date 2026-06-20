@@ -133,7 +133,7 @@ const Home: React.FC = () => {
                 <span className="bg-gradient-to-r from-cyan-400 via-orange-400 to-blue-600 bg-clip-text text-transparent animate-gradient-x">
                   Shashank Singh
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-sky-500/20 to-blue-600/20 blur-2xl animate-pulse"></div>
+                <span className="absolute inset-0 block bg-gradient-to-r from-cyan-400/20 via-sky-500/20 to-blue-600/20 blur-2xl animate-pulse"></span>
               </span>
             </h1>
           </ScrollAnimatedSection>
@@ -143,15 +143,15 @@ const Home: React.FC = () => {
               Passionate about building scalable infrastructure, pipelines, and exploring the intersection of{' '}
               <span className="font-semibold text-orange-600 dark:text-orange-400 relative">
                 DevOps
-                <div className="absolute inset-0 bg-primary-600/10 blur-lg rounded"></div>
+                <span className="absolute inset-0 block bg-primary-600/10 blur-lg rounded"></span>
               </span>,{' '}
               <span className="font-semibold text-teal-600 dark:text-teal-400 relative">
                 MLOps
-                <div className="absolute inset-0 bg-teal-600/10 blur-lg rounded"></div>
+                <span className="absolute inset-0 block bg-teal-600/10 blur-lg rounded"></span>
               </span>, and{' '}
               <span className="font-semibold text-primary-400 dark:text-primary-300 relative">
                 Quantum ML
-                <div className="absolute inset-0 bg-neural-600/10 blur-lg rounded"></div>
+                <span className="absolute inset-0 block bg-neural-600/10 blur-lg rounded"></span>
               </span>
             </p>
           </ScrollAnimatedSection>

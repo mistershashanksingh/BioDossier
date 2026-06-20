@@ -8,12 +8,23 @@ import {
   FaStar as Star,
   FaCodeFork as GitFork,
   FaGears,
-  FaBrain,
-  FaAtom,
   FaServer,
   FaMagnifyingGlassChart,
-  FaShieldHalved
+  FaShieldHalved,
+  FaDocker,
+  FaDatabase,
+  FaCloud,
+  FaChartLine,
+  FaFlask,
+  FaBug,
+  FaLock
 } from 'react-icons/fa6';
+import { VscAzureDevops } from 'react-icons/vsc';
+import { AiOutlineDeploymentUnit } from 'react-icons/ai';
+import { GiAtom } from 'react-icons/gi';
+import { SiTerraform } from 'react-icons/si';
+import { PiHeadCircuitLight } from "react-icons/pi";
+import { LiaAtomSolid } from "react-icons/lia";
 import type { IconType } from 'react-icons';
 import ScrollAnimatedSection from '@/components/ScrollAnimatedSection';
 
@@ -24,7 +35,7 @@ const Projects: React.FC = () => {
       title: 'DevOps Automation Suite',
       description: 'Comprehensive CI/CD pipeline automation tool with monitoring and alerting capabilities. Built to streamline deployment processes and reduce manual intervention.',
       longDescription: 'A complete DevOps automation platform that integrates with popular CI/CD tools, provides real-time monitoring, and includes automated rollback capabilities. The suite supports multiple deployment strategies including blue-green and canary deployments.',
-      icon: FaGears,
+      icons: [FaGears, FaDocker, VscAzureDevops],
       technologies: ['Docker', 'Kubernetes', 'Jenkins', 'Prometheus', 'Grafana', 'Python', 'Go'],
       category: 'DevOps',
       status: 'Active',
@@ -49,7 +60,7 @@ const Projects: React.FC = () => {
       title: 'MLOps Model Registry',
       description: 'Cloud-native ML model registry with versioning, deployment, and monitoring capabilities for machine learning operations.',
       longDescription: 'A sophisticated MLOps platform that handles the complete ML model lifecycle from experimentation to production deployment. Features include A/B testing, model performance monitoring, and automated retraining pipelines.',
-      icon: FaBrain,
+      icons: [PiHeadCircuitLight, AiOutlineDeploymentUnit, FaDatabase],
       technologies: ['MLflow', 'FastAPI', 'Docker', 'PostgreSQL', 'React', 'AWS', 'TensorFlow'],
       category: 'MLOps',
       status: 'Active',
@@ -74,7 +85,7 @@ const Projects: React.FC = () => {
       title: 'Quantum ML Algorithms',
       description: 'Implementation of quantum machine learning algorithms using Qiskit, exploring quantum advantage in specific ML tasks.',
       longDescription: 'Research-focused project implementing various quantum machine learning algorithms including QAOA, VQE, and quantum neural networks. Includes performance comparisons with classical counterparts and visualization tools.',
-      icon: FaAtom,
+      icons: [LiaAtomSolid , GiAtom, FaFlask],
       technologies: ['Qiskit', 'Python', 'NumPy', 'Matplotlib', 'Jupyter', 'Scipy'],
       category: 'Quantum',
       status: 'Research',
@@ -99,7 +110,7 @@ const Projects: React.FC = () => {
       title: 'Infrastructure as Code Templates',
       description: 'Collection of Terraform and Ansible templates for common cloud infrastructure patterns and best practices.',
       longDescription: 'Comprehensive collection of Infrastructure as Code templates covering AWS, GCP, and Azure. Includes security best practices, cost optimization strategies, and multi-environment configurations.',
-      icon: FaServer,
+      icons: [FaServer, SiTerraform, FaCloud],
       technologies: ['Terraform', 'Ansible', 'AWS', 'GCP', 'Azure', 'Bash', 'YAML'],
       category: 'Infrastructure',
       status: 'Active',
@@ -124,7 +135,7 @@ const Projects: React.FC = () => {
       title: 'AI-Powered Log Analysis',
       description: 'Machine learning system for automated log analysis, anomaly detection, and intelligent alerting in distributed systems.',
       longDescription: 'Advanced log analysis platform using natural language processing and anomaly detection algorithms to automatically identify issues in distributed systems. Features predictive alerting and root cause analysis.',
-      icon: FaMagnifyingGlassChart,
+      icons: [FaMagnifyingGlassChart, FaChartLine, FaDatabase],
       technologies: ['Python', 'Elasticsearch', 'Logstash', 'Kibana', 'Scikit-learn', 'Docker'],
       category: 'AI/ML',
       status: 'Active',
@@ -149,7 +160,7 @@ const Projects: React.FC = () => {
       title: 'Container Security Scanner',
       description: 'Automated security scanning tool for container images with vulnerability assessment and compliance checking.',
       longDescription: 'Security-focused tool that performs comprehensive vulnerability scanning of container images, checks for compliance with security best practices, and integrates with CI/CD pipelines for automated security testing.',
-      icon: FaShieldHalved,
+      icons: [FaShieldHalved, FaLock, FaBug],
       technologies: ['Go', 'Docker', 'Kubernetes', 'PostgreSQL', 'React', 'REST API'],
       category: 'Security',
       status: 'Active',
@@ -265,7 +276,7 @@ const Projects: React.FC = () => {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {filteredProjects.map((project, index) => {
-            const Icon: IconType = project.icon;
+            const [IconMain, IconA, IconB]: IconType[] = project.icons;
             return (
             <ScrollAnimatedSection
               key={project.id}
@@ -274,21 +285,25 @@ const Projects: React.FC = () => {
               threshold={0.1}
             >
               <div className="group group p-8 glass-card rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 hover:shadow-2xl transition-all duration-500">
-              {/* Project Icon Header */}
-              <div className={`relative h-48 overflow-hidden rounded-xl flex items-center justify-center bg-gradient-to-br ${getCategoryGradient(project.category)}`}>
+              {/* Project Icon Header — scattered vector icons */}
+              <div className={`relative h-48 overflow-hidden rounded-xl bg-gradient-to-br ${getCategoryGradient(project.category)}`}>
                 {/* Decorative glow + faint pattern */}
                 <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_30%_25%,white,transparent_55%)]"></div>
-                <div className="absolute -bottom-8 -right-6 opacity-10">
-                  <Icon className="w-44 h-44 text-white" />
-                </div>
 
-                {/* Main vector icon */}
-                <Icon className="relative z-10 w-24 h-24 text-white/95 drop-shadow-lg group-hover:scale-110 transition-transform duration-500" />
+                {/* Faint oversized backdrop icon */}
+                <IconMain className="absolute -bottom-10 -right-8 w-48 h-48 text-white opacity-10 rotate-12" />
+
+                {/* Scattered icons */}
+                <IconA className="absolute top-6 left-7 w-11 h-11 text-white/50 -rotate-12 drop-shadow-md group-hover:-translate-y-1 transition-transform duration-500" />
+                <IconB className="absolute bottom-7 right-9 w-12 h-12 text-white/50 rotate-12 drop-shadow-md group-hover:translate-y-1 transition-transform duration-500" />
+
+                {/* Main focal icon */}
+                <IconMain className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 text-white/95 drop-shadow-lg group-hover:scale-110 transition-transform duration-500 z-10" />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 {/* Project Status */}
-                <div className="absolute top-4 right-4 flex space-x-2">
+                <div className="absolute top-4 right-4 flex space-x-2 z-20">
                   <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(project.status)}`}>
                     {project.status}
                   </span>
